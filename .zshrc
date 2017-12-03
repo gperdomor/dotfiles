@@ -85,3 +85,4 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 if which swiftenv > /dev/null; then eval "$(swiftenv init -)"; fi
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
