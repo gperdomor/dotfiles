@@ -6,7 +6,7 @@
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX
   excludesfile = ~/.gitignore
-  # autocrlf = input
+  autocrlf = input
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -21,7 +21,7 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
-[commit]
-	gpgsign = true
 [gpg]
 	program = /usr/local/bin/gpg
+[commit]
+	gpgsign = true
