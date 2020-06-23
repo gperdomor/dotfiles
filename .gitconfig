@@ -3,6 +3,7 @@
 [user]
 	name = Gustavo Perdomo
 	email = gperdomor@gmail.com
+	signingkey = AC9E1B51C4CBD24A9B78946C938264B6F2F7FE17
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX
   excludesfile = ~/.gitignore
@@ -25,3 +26,12 @@
 	program = /usr/local/bin/gpg
 [commit]
 	gpgsign = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[protocol]
+	version = 2
+[pull]
+	rebase = false
