@@ -8,6 +8,7 @@
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = ~/.gitignore
 	autocrlf = input
+	editor = code --wait
 [color]
 	ui = true
 [color "diff-highlight"]
