@@ -3,7 +3,7 @@
 [user]
 	name = Gustavo Perdomo
 	email = gperdomor@gmail.com
-	signingkey = AC9E1B51C4CBD24A9B78946C938264B6F2F7FE17
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINHJmy4J1Uw1NMiW489WQqGpGXbjiVurAK3DEYZuZoWw
 [core]
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = ~/.gitignore
@@ -25,6 +25,7 @@
 	whitespace = red reverse
 [gpg]
 	program = /usr/local/bin/gpg
+	format = ssh
 [commit]
 	gpgsign = true
 [filter "lfs"]
@@ -38,3 +39,5 @@
 	rebase = false
 [init]
 	defaultBranch = main
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign

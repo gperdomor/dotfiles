@@ -26,10 +26,11 @@ ZSH_THEME="robbyrussell"
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's 
+time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+# zstyle ':omz:update' frequency 7
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -70,7 +71,7 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git dotenv zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -104,13 +105,9 @@ source $ZSH/oh-my-zsh.sh
 # export ANDROID_NDK=$HOME/Library/Android/sdk/ndk-bundle
 # export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_NDK
 
-#starship
-eval "$(starship init zsh)"
-
 #fnm
 eval "$(fnm env --use-on-cd)"
+alias nvm="fnm"
 
-# pnpm
-# export PNPM_HOME="/Users/gperdomor/Library/pnpm"
-# export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+#starship
+eval "$(starship init zsh)"
