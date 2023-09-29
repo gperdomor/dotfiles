@@ -24,7 +24,6 @@
 	new = green bold
 	whitespace = red reverse
 [gpg]
-	program = /usr/local/bin/gpg
 	format = ssh
 [commit]
 	gpgsign = true
@@ -41,3 +40,4 @@
 	defaultBranch = main
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedsignersfile = /Users/gperdomor/Developer/dotfiles/.allowed_signers
