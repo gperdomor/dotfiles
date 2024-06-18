@@ -1,14 +1,11 @@
-[push]
-	default = simple
 [user]
 	name = Gustavo Perdomo
 	email = gperdomor@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINHJmy4J1Uw1NMiW489WQqGpGXbjiVurAK3DEYZuZoWw
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINHJmy4J1Uw1NMiW489WQqGpGXbjiVurAK3DEYZuZoWw Git Signing Key
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
-	excludesfile = ~/.gitignore
-	autocrlf = input
-	editor = code --wait
+	pager = diff-so-fancy | less --tabs=4 -RF
+[interactive]
+	diffFilter = diff-so-fancy --patch
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -19,6 +16,7 @@
 [color "diff"]
 	meta = 11
 	frag = magenta bold
+	func = 146 bold
 	commit = yellow bold
 	old = red bold
 	new = green bold
@@ -34,8 +32,6 @@
 	process = git-lfs filter-process
 [protocol]
 	version = 2
-[pull]
-	rebase = false
 [init]
 	defaultBranch = main
 [gpg "ssh"]
