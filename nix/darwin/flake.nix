@@ -25,7 +25,6 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = [
-            pkgs.nixfmt-rfc-style
             pkgs.act
             pkgs.cosign
             pkgs.diff-so-fancy
@@ -35,11 +34,12 @@
             pkgs.iperf
             pkgs.mkalias
             pkgs.nil
+            pkgs.nixfmt-rfc-style
             pkgs.openssl
             pkgs.opentofu
             pkgs.rclone
             pkgs.ssh-copy-id
-            pkgs.starship
+            pkgs.zoxide
           ];
 
           fonts.packages = [
@@ -53,8 +53,11 @@
             enable = true;
             brews = [
               "fnm"
+              "fzf"
               "mas"
+              "oh-my-posh"
               "podman"
+              "starship"
             ];
             casks = [
               "appcleaner"
@@ -129,14 +132,18 @@
               done
             '';
 
+          security.pam.enableSudoTouchIdAuth = true
           system.defaults = {
             dock.autohide = true;
             # dock.persistent-apps = [];
 
             finder.FXPreferredViewStyle = "clmv";
+            # finder.ShowStatusBar = true;
             loginwindow.GuestEnabled = false;
             NSGlobalDomain.AppleICUForce24HourTime = false;
-            # NSGlobalDomain.AppleInterfaceStyle = "Dark"
+            # NSGlobalDomain.AppleInterfaceStyle = "Dark";
+            screencapture.location = "~/Pictures/screenshots";
+            screensaver.askForPasswordDelay = 10;
           };
 
           # Necessary for using flakes on this system.
