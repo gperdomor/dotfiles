@@ -150,7 +150,7 @@ eval "$(starship init zsh)"
 
 # Load Oh My Posh except for Apple Terminal
 # if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-#   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/.ohmyposh.toml)"
+#   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.toml)"
 # else
 #   export STARSHIP_CONFIG=~/.starship.toml
 #   eval "$(starship init zsh)"
