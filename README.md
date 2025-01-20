@@ -8,4 +8,4 @@ stow --dir="files/" --target="$HOME" .
 
 ## License
 
-macOs-nix is released under the [MIT License](LICENSE).
+dotfiles is released under the [MIT License](LICENSE).
