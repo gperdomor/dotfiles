@@ -65,12 +65,47 @@ ZSH_THEME="robbyrussell"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+## Custom Plugins
+ZP_SYNTAX_HIGHLIGHTING=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [ ! -d $ZP_SYNTAX_HIGHLIGHTING/.git ]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZP_SYNTAX_HIGHLIGHTING
+fi
+
+ZP_AUTOSUGGESTIONS=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+if [ ! -d $ZP_AUTOSUGGESTIONS/.git ]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZP_AUTOSUGGESTIONS
+fi
+
+ZP_COMPLETIONS=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions
+fpath+=${ZP_COMPLETIONS}/src
+if [ ! -d $ZP_COMPLETIONS/.git ]; then
+  git clone https://github.com/zsh-users/zsh-completions $ZP_COMPLETIONS
+fi
+
+ZP_FZF_TAB=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+if [ ! -d $ZP_FZF_TAB/.git ]; then
+  git clone https://github.com/Aloxaf/fzf-tab $ZP_FZF_TAB
+fi
+
+ZOXIDE_CMD_OVERRIDE=cd
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  command-not-found
+  fzf-tab
+  git
+  npm
+  sudo
+  vscode
+  zoxide
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -103,10 +138,24 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#fnm
-eval "$(fnm env --use-on-cd)"
-alias nvm="fnm"
+# Completion styling
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-#starship
+# Shell Integrations
 export STARSHIP_CONFIG=~/.starship.toml
+eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
+
+# Load Oh My Posh except for Apple Terminal
+# if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+#   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.toml)"
+# else
+#   export STARSHIP_CONFIG=~/.starship.toml
+#   eval "$(starship init zsh)"
+# fi
+
+# Aliases
+alias c="clear"
+alias nvm="fnm"

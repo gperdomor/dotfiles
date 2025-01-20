@@ -1,6 +1,10 @@
 # dotfiles
 
-My configuration. Minimalist, but helps save a few thousand keystrokes a day. I use Mac OS X, so I can only guarantee they'll work with OS X
+I manage the various configuration files in this repo using GNU Stow. This allows me to set up symlinks for all of my dotfiles using a single command:
+
+```bash
+stow --dir="files/" --target="$HOME" .
+```
 
 ## License
 
