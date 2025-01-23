@@ -3,7 +3,7 @@
 I manage the various configuration files in this repo using GNU Stow. This allows me to set up symlinks for all of my dotfiles using a single command:
 
 ```bash
-stow . --dir files/ --target $HOME --verbose=2
+stow . --dir files/ --target $HOME --no-folding --verbose=2
 ```
 
 ## License

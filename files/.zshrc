@@ -149,8 +149,13 @@ eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
 
 # Load Oh My Posh except for Apple Terminal
+# OMP_THEME='zen'
 # if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-#   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.toml)"
+#   if [ -n "${OMP_THEME}" ]; then
+#     eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/themes/${OMP_THEME}.omp.toml)"
+#   else
+#     eval "$(oh-my-posh init zsh)"
+#   fi
 # else
 #   export STARSHIP_CONFIG=~/.starship.toml
 #   eval "$(starship init zsh)"
