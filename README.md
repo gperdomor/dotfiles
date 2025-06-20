@@ -1,9 +1,28 @@
 # dotfiles
 
-I manage the various configuration files in this repo using GNU Stow. This allows me to set up symlinks for all of my dotfiles using a single command:
+This repo contains the configuration to setup my machines. This is using [Chezmoi](https://chezmoi.io), the dotfile manager to setup the install.
 
-```bash
-stow . --dir files/ --target $HOME --no-folding --verbose=2
+This automated setup is currently only configured for macOS machines.
+
+## Prepare
+
+1. Install command line tools
+
+```shell
+xcode-select --install
+```
+
+2. Install Homebrew, Chezmoi and launch configuration
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+## How to run
+
+```shell
+export GITHUB_USERNAME=gperdomor
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
 ```
 
 ## License

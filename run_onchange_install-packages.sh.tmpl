@@ -1,0 +1,22 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+# Processing Brewfile
+brew bundle
+
+{{ end -}}
+
+# Install latest stable version of Node.js
+fnm install 22
+fnm default 22
+
+# Install latest versions of global Node.js packages
+npm -g install\
+  autocannon\
+  create-nx-workspace\
+  depcheck\
+  eslint\
+  knip\
+  npm-check-updates\
+  nx\
+  prettier

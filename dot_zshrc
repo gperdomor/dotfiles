@@ -144,7 +144,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Shell Integrations
-eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive --corepack-enabled --shell zsh)"
 
 # Load Oh My Posh except for Apple Terminal
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
@@ -154,6 +154,6 @@ else
   eval "$(starship init zsh)"
 fi
 
-# Aliases
+# Aliases
 alias c="clear"
 alias nvm="fnm"
