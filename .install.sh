@@ -204,8 +204,19 @@ guide_1password_setup() {
     echo "  5. Enable 'Use the SSH Agent'"
     echo
 
-    # Wait for user confirmation
-    read -p "Press Enter when you've completed the setup above..." -r
+    # Wait for user confirmation with proper input handling
+    if [[ -t 0 ]]; then
+        # Interactive terminal
+        read -p "Press Enter when you've completed the setup above..." -r < /dev/tty
+    else
+        # Non-interactive (e.g., curl | bash)
+        echo "Press Enter when you've completed the setup above..."
+        read -r < /dev/tty || {
+            log_warning "Unable to wait for user input in non-interactive mode"
+            log_info "Continuing with 1Password integration test..."
+            sleep 3
+        }
+    fi
     echo
 
     # Test the integration
@@ -227,9 +238,16 @@ guide_1password_setup() {
         echo "  • Check that you're signed in to at least one account"
         echo
 
-        read -p "Would you like to try the test again? (y/N): " -r
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            check_1password_integration
+        if [[ -t 0 ]]; then
+            # Interactive terminal
+            read -p "Would you like to try the test again? (y/N): " -r < /dev/tty
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                check_1password_integration
+            fi
+        else
+            # Non-interactive mode
+            log_info "Running in non-interactive mode, skipping retry prompt"
+            log_info "You can run 'op account list' manually to test integration later"
         fi
     fi
 }
@@ -275,7 +293,19 @@ initialize_dotfiles() {
 
     if [[ -d "$HOME/.local/share/chezmoi" ]]; then
         log_warning "Chezmoi directory already exists"
-        read -p "Do you want to reinitialize? This will backup existing config. (y/N): " -r
+        
+        if [[ -t 0 ]]; then
+            # Interactive terminal
+            read -p "Do you want to reinitialize? This will backup existing config. (y/N): " -r < /dev/tty
+        else
+            # Non-interactive mode
+            echo "Do you want to reinitialize? This will backup existing config. (y/N):"
+            read -r < /dev/tty || {
+                log_info "Running in non-interactive mode, skipping reinitialization"
+                return 0
+            }
+        fi
+        
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             # Backup existing chezmoi directory
             local backup_dir="$HOME/.local/share/chezmoi.backup.$(date +%Y%m%d_%H%M%S)"

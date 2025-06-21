@@ -5,7 +5,7 @@ set -e
 # This scripts logs my docker agent into all necessary systems
 
 # Log into DockerHub
-echo "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" | docker login -u {{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }} --password-stdin
+echo "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/b7gcbrwyxzni5dt3wb5e75sf5y/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" | docker login -u {{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }} --password-stdin
 
 {{ if .isWorkComputer -}}
 # Log into GitLab Registry
