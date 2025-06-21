@@ -1,7 +1,0 @@
-[onepassword]
-    command = "op"
-    # Optionally specify the account if you have multiple
-    # account = "your-account-name"
-    
-    # Enable prompt for authentication if needed
-    prompt = true

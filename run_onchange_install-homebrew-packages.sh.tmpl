@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+set -ex
+
+# hash of the Brewfile file, used to determine if we need to rerun this script
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+
+brew bundle
+
+{{ end -}}
