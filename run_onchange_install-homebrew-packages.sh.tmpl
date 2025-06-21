@@ -4,8 +4,12 @@
 set -euo pipefail
 
 # Source shared utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/lib/shell-utils.sh"
+if [[ -z "${CHEZMOI_WORKING_TREE}" ]]; then
+    echo "Error, \$CHEZMOI_WORKING_TREE must be set. Please only run this script via chezmoi"
+    exit 1
+fi
+source "${CHEZMOI_WORKING_TREE}/lib/shell-utils.sh"
+
 
 # Setup error handling
 setup_simple_error_trap
@@ -67,7 +71,7 @@ show_installation_plan() {
     fi
 
     # Show bundle status
-    if brew bundle check --no-lock 2>/dev/null; then
+    if brew bundle check 2>/dev/null; then
         log_info "✅ All Brewfile dependencies are satisfied"
     else
         log_info "📥 New packages will be installed from Brewfile"
@@ -83,7 +87,7 @@ install_brewfile_packages() {
     start_time=$(date +%s)
 
     # Use brew bundle with verbose output for better feedback
-    if brew bundle --no-lock --verbose; then
+    if brew bundle --verbose; then
         local end_time
         end_time=$(date +%s)
         local duration=$((end_time - start_time))

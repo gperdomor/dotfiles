@@ -3,8 +3,11 @@
 set -euo pipefail
 
 # Source shared utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/lib/shell-utils.sh"
+if [[ -z "${CHEZMOI_WORKING_TREE}" ]]; then
+    echo "Error, \$CHEZMOI_WORKING_TREE must be set. Please only run this script via chezmoi"
+    exit 1
+fi
+source "${CHEZMOI_WORKING_TREE}/lib/shell-utils.sh"
 
 # Setup error handling
 setup_simple_error_trap
@@ -35,7 +38,7 @@ check_existing_installation() {
             if [[ -f "$OH_MY_ZSH_DIR/.git/refs/heads/master" ]]; then
                 version_info=" ($(cd "$OH_MY_ZSH_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "unknown"))"
             fi
-            log_info "✅ Valid Oh My Zsh installation detected$version_info"
+            log_success "Valid Oh My Zsh installation detected$version_info"
             return 0
         else
             log_warning "Directory exists but doesn't appear to be a valid Oh My Zsh installation"

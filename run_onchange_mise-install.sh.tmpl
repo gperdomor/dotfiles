@@ -5,8 +5,11 @@
 set -euo pipefail
 
 # Source shared utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/lib/shell-utils.sh"
+if [[ -z "${CHEZMOI_WORKING_TREE}" ]]; then
+    echo "Error, \$CHEZMOI_WORKING_TREE must be set. Please only run this script via chezmoi"
+    exit 1
+fi
+source "${CHEZMOI_WORKING_TREE}/lib/shell-utils.sh"
 
 # Setup error handling
 setup_simple_error_trap
