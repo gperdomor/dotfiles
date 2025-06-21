@@ -1,4 +1,7 @@
 [tools]
-node = 'lts'
-#rust = 'stable'
-#go = 'latest'
+go = "latest"
+node = "lts"
+rust = "latest"
+
+[env]
+MISE_NODE_COREPACK = "true"
