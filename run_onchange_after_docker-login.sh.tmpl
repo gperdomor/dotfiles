@@ -1,13 +1,120 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-# This scripts logs my docker agent into all necessary systems
+# Color codes for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
 
-# Log into DockerHub
-echo "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/b7gcbrwyxzni5dt3wb5e75sf5y/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" | docker login -u {{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }} --password-stdin
+# Logging functions
+log_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+log_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+log_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+log_error() {
+    echo -e "${RED}❌ $1${NC}" >&2
+}
+
+# Safe Docker login function
+docker_login() {
+    local registry="$1"
+    local username="$2"
+    local password="$3"
+    local registry_name="$4"
+
+    log_info "Logging into $registry_name..."
+
+    # Use process substitution to avoid password in command history
+    if echo "$password" | docker login ${registry:+"$registry"} -u "$username" --password-stdin >/dev/null 2>&1; then
+        log_success "Successfully logged into $registry_name"
+        return 0
+    else
+        log_error "Failed to login to $registry_name"
+        return 1
+    fi
+}
+
+# Main execution
+main() {
+    echo
+    log_info "🐳 Configuring Docker registry authentication..."
+    echo
+
+    local login_failures=0
+
+    # DockerHub login
+    log_info "📦 Authenticating with DockerHub..."
+    if ! docker_login "" \
+        "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
+        "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/b7gcbrwyxzni5dt3wb5e75sf5y/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
+        "DockerHub"; then
+        ((login_failures++))
+    fi
 
 {{ if .isWorkComputer -}}
-# Log into GitLab Registry
-echo "{{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/bzfnqbmzljrvyruzty2sq5auw4/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" | docker login registry.falabella.tech -u {{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/6e5oydk6aeh7zlfpm7se5gcyf4/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }} --password-stdin
+    # GitLab Registry login (work computer only)
+    log_info "🦊 Authenticating with GitLab Registry..."
+    if ! docker_login "registry.falabella.tech" \
+        "{{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/6e5oydk6aeh7zlfpm7se5gcyf4/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
+        "{{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/bzfnqbmzljrvyruzty2sq5auw4/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
+        "GitLab Registry (Falabella)"; then
+        ((login_failures++))
+    fi
 {{ end -}}
+
+    echo
+    # Summary
+    if [[ $login_failures -eq 0 ]]; then
+        log_success "🎉 All Docker registry logins completed successfully!"
+    else
+        log_warning "⚠️  Completed with $login_failures login failure(s)"
+    fi
+
+    echo
+
+    # Show currently logged in registries
+    log_info "📋 Current Docker authentication status:"
+    if docker system info --format '{{json .}}' 2>/dev/null | grep -q "Username"; then
+        echo "  ✅ DockerHub: Authenticated"
+    else
+        echo "  ❌ DockerHub: Not authenticated"
+    fi
+
+{{ if .isWorkComputer -}}
+    # Check GitLab registry auth (basic check)
+    if docker pull registry.falabella.tech/digital-retail/ci-reuse/lint/markdown:latest >/dev/null 2>&1; then
+        echo "  ✅ GitLab Registry: Authenticated"
+        docker rmi registry.falabella.tech/digital-retail/ci-reuse/lint/markdown:latest >/dev/null 2>&1 || true
+    else
+        echo "  ❌ GitLab Registry: Authentication status unknown"
+    fi
+{{ end -}}
+
+    echo
+    log_info "💡 Tips:"
+    echo "  • Login sessions persist until Docker Desktop restart"
+    echo "  • Use 'docker logout [registry]' to sign out"
+    echo "  • Check auth status with 'docker system info'"
+
+    # Exit with error code if any logins failed
+    if [[ $login_failures -gt 0 ]]; then
+        exit 1
+    fi
+}
+
+# Trap errors and cleanup
+trap 'log_error "Script failed on line $LINENO"' ERR
+
+# Run main function
+main "$@"
