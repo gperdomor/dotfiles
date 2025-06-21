@@ -1,32 +1,13 @@
 #!/bin/bash
 
-# filepath: /Users/gperdomor/.local/share/chezmoi/run_onchange_after_setup-system-settings
-
 set -euo pipefail
 
-# Color codes for output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+# Source shared utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/shell-utils.sh"
 
-# Logging functions
-log_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
-}
-
-log_success() {
-    echo -e "${GREEN}✅ $1${NC}"
-}
-
-log_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-log_error() {
-    echo -e "${RED}❌ $1${NC}" >&2
-}
+# Setup error handling
+setup_simple_error_trap
 
 # Check if we're on macOS
 check_macos() {
@@ -252,31 +233,29 @@ main() {
     customize_dock
     customize_trackpad
 
-    echo
-    log_success "🎉 System customization completed successfully!"
-    echo
+    show_summary 0 \
+        "System customization completed successfully!" \
+        "System customization completed with failures"
 
     # Summary of what was configured
+    echo
     log_info "📋 Configuration Summary:"
     echo "  ✅ Finder preferences (status bar, path bar, view settings)"
     echo "  ✅ Dock preferences (size, animations, behaviors)"
     echo "  ✅ Trackpad preferences (tap to click, gestures)"
-    echo
 
     # Next steps and recommendations
+    echo
     log_info "🚀 Next Steps:"
     echo "  • Some settings require a logout/login to take full effect"
     echo "  • Trackpad settings may need system restart for complete activation"
     echo "  • Run 'killall SystemUIServer' if menu bar changes don't appear"
     echo "  • Customize further by editing this script in ~/.local/share/chezmoi"
-    echo
 
     # Optional restart recommendation
+    echo
     log_warning "💡 Recommendation: Restart your Mac to ensure all settings take effect"
 }
-
-# Trap errors and cleanup
-trap 'log_error "Script failed on line $LINENO"' ERR
 
 # Run main function
 main "$@"

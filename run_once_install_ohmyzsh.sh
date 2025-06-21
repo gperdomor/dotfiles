@@ -2,58 +2,26 @@
 
 set -euo pipefail
 
-# Color codes for output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+# Source shared utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/shell-utils.sh"
+
+# Setup error handling
+setup_simple_error_trap
 
 # Configuration
 readonly OH_MY_ZSH_DIR="$HOME/.oh-my-zsh"
 readonly OH_MY_ZSH_INSTALL_URL="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 readonly ZSHRC_PATH="$HOME/.zshrc"
 
-# Logging functions
-log_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
-}
+# Check prerequisites (using shared function)
+check_ohmyzsh_prerequisites() {
+    check_prerequisites "curl" "zsh"
 
-log_success() {
-    echo -e "${GREEN}✅ $1${NC}"
-}
-
-log_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-log_error() {
-    echo -e "${RED}❌ $1${NC}" >&2
-}
-
-# Check prerequisites
-check_prerequisites() {
-    local required_tools=("curl" "zsh")
-    local missing_tools=()
-
-    for tool in "${required_tools[@]}"; do
-        if ! command -v "$tool" >/dev/null 2>&1; then
-            missing_tools+=("$tool")
-        fi
-    done
-
-    if [[ ${#missing_tools[@]} -gt 0 ]]; then
-        log_error "Missing required tools: ${missing_tools[*]}"
-        log_info "Please install the missing tools and try again"
-        return 1
-    fi
-
-    # Check if zsh is available
+    # Check if zsh is available and show version
     local zsh_version
     zsh_version=$(zsh --version 2>/dev/null | head -n1 || echo "unknown")
     log_info "Zsh version: $zsh_version"
-
-    return 0
 }
 
 # Check if Oh My Zsh is already installed
@@ -198,7 +166,7 @@ main() {
     local failures=0
 
     # Check prerequisites
-    if ! check_prerequisites; then
+    if ! check_ohmyzsh_prerequisites; then
         ((failures++))
         return 1
     fi
@@ -227,29 +195,23 @@ main() {
     show_installation_status
 
     # Summary
-    if [[ $failures -eq 0 ]]; then
-        log_success "🎉 Oh My Zsh setup completed successfully!"
-    else
-        log_warning "⚠️  Setup completed with $failures failure(s)"
-    fi
+    show_summary $failures \
+        "Oh My Zsh setup completed successfully!" \
+        "Oh My Zsh setup completed with failures"
 
-    echo
-    log_info "💡 Tips:"
-    echo "  • Oh My Zsh directory: $OH_MY_ZSH_DIR"
-    echo "  • Configuration file: $ZSHRC_PATH"
-    echo "  • Browse themes: ls $OH_MY_ZSH_DIR/themes/"
-    echo "  • Browse plugins: ls $OH_MY_ZSH_DIR/plugins/"
-    echo "  • Update Oh My Zsh: omz update"
-    echo "  • Restart your shell or run 'exec zsh' to reload"
+    show_tips \
+        "Oh My Zsh directory: $OH_MY_ZSH_DIR" \
+        "Configuration file: $ZSHRC_PATH" \
+        "Browse themes: ls $OH_MY_ZSH_DIR/themes/" \
+        "Browse plugins: ls $OH_MY_ZSH_DIR/plugins/" \
+        "Update Oh My Zsh: omz update" \
+        "Restart your shell or run 'exec zsh' to reload"
 
     # Exit with error code if any critical operations failed
     if [[ $failures -gt 0 ]]; then
         exit 1
     fi
 }
-
-# Trap errors and cleanup
-trap 'log_error "Script failed on line $LINENO"' ERR
 
 # Run main function
 main "$@"
