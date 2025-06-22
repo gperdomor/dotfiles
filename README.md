@@ -79,7 +79,7 @@ The installation script will automatically:
 2. 🍺 **Install Homebrew** - The missing package manager for macOS
 3. 🔐 **Install 1Password** - Password manager with CLI integration for secure secret management
 4. 📦 **Install Chezmoi** - Dotfiles manager for configuration sync
-5. 🛠️ **Install Development Tools** - Git, GitHub CLI, and essential utilities
+5. 🛠️ **Install Development Tools** - Git, Mise, and essential utilities
 6. 🏠 **Clone & Apply Dotfiles** - Download and configure your environment
 
 ### 🕒 Installation Time

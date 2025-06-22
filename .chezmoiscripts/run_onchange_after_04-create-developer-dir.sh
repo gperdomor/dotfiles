@@ -15,17 +15,17 @@ setup_simple_error_trap
 # Configuration
 readonly DEVELOPER_DIR="$HOME/Developer"
 readonly REPOSITORIES=(
-    "gperdomor/nx-tools"
+    "https://github.com/gperdomor/nx-tools"
 )
 
 # Check if required tools are available (using shared function)
 check_developer_prerequisites() {
-    check_prerequisites "gh" "git"
+    check_prerequisites "git"
 }
 
 # Create developer directory
 create_developer_directory() {
-    log_info "📁 Creating Developer directory at $DEVELOPER_DIR..."
+    log_info "Creating Developer directory at $DEVELOPER_DIR..."
 
     if mkdir -p "$DEVELOPER_DIR"; then
         log_success "Developer directory created successfully"
@@ -48,9 +48,10 @@ clone_repository() {
         return 0
     fi
 
-    log_info "📥 Cloning repository '$repo'..."
+    echo
+    log_info "Cloning repository '$repo'..."
 
-    if (cd "$DEVELOPER_DIR" && gh repo clone "$repo"); then
+    if (cd "$DEVELOPER_DIR" && git clone "$repo"); then
         log_success "Repository '$repo_name' cloned successfully"
         return 0
     else
@@ -61,9 +62,7 @@ clone_repository() {
 
 # Main execution
 main() {
-    echo
-    log_info "🏗️  Setting up Developer environment..."
-    echo
+    show_script_header "🏗️  Setting up Developer environment..."
 
     local failures=0
 
@@ -91,7 +90,7 @@ main() {
         "Developer environment setup completed with failures"
 
     echo
-    log_info "� Developer directory status:"
+    log_title "📊 Developer directory status:"
     for repo in "${REPOSITORIES[@]}"; do
         local repo_name
         repo_name=$(basename "$repo")

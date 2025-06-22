@@ -44,7 +44,8 @@ check_mise_config() {
 
 # Show what will be installed
 show_installation_plan() {
-    log_info "📋 Installation plan:"
+    echo
+    log_title "📋 Installation plan:"
 
     if mise ls --json >/dev/null 2>&1; then
         # Show currently installed tools
@@ -67,7 +68,7 @@ show_installation_plan() {
 
 # Install mise tools
 install_mise_tools() {
-    log_info "🔧 Installing mise tools..."
+    log_title "🔧 Installing mise tools..."
 
     local start_time
     start_time=$(date +%s)
@@ -87,22 +88,19 @@ install_mise_tools() {
 
 # Show post-installation status
 show_installation_status() {
-    log_info "📊 Installation status:"
+    echo
+    log_title "📊 Installation status:"
 
     if mise ls >/dev/null 2>&1; then
         mise ls | grep -E "^\w" | awk '{print "  ✅ " $1 " " $2}' || echo "  No tools installed"
     else
         log_warning "Unable to retrieve installation status"
     fi
-    echo
 }
 
 # Main execution
 main() {
-    echo
-    log_info "🛠️  mise Tool Installation Manager"
-    log_info "Config hash: ${MISE_CONFIG_HASH:0:8}..."
-    echo
+    show_script_header "🛠️  mise Tool Installation Manager - Config hash: ${MISE_CONFIG_HASH:0:8}"
 
     local failures=0
 

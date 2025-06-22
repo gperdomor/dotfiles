@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# filepath: /Users/gperdomor/.local/share/chezmoi/.install.sh
+# filepath: /Users/gperdomor/.local/share/chezmoi/.install-prerequisites.sh
 
 set -euo pipefail
 
@@ -9,6 +9,8 @@ readonly RED='\033[0;31m'
 readonly GREEN='\033[0;32m'
 readonly YELLOW='\033[1;33m'
 readonly BLUE='\033[0;34m'
+readonly CYAN='\033[0;36m'
+readonly BOLD='\033[1m'
 readonly NC='\033[0m' # No Color
 
 # Logging functions
@@ -17,7 +19,7 @@ log_info() {
 }
 
 log_success() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}✅  $1${NC}"
 }
 
 log_warning() {
@@ -26,6 +28,25 @@ log_warning() {
 
 log_error() {
     echo -e "${RED}❌ $1${NC}" >&2
+}
+
+log_header() {
+    echo -e "${BOLD}${CYAN}$1${NC}"
+}
+
+log_title() {
+    echo -e "${BLUE}$1${NC}"
+}
+
+# Show script header with title and version
+show_script_header() {
+    local title="$1"
+
+    echo
+    log_header "═══════════════════════════════════════════════════════════════"
+    log_header "$title"
+    log_header "═══════════════════════════════════════════════════════════════"
+    echo
 }
 
 # Check if command exists
@@ -145,6 +166,7 @@ install_1password_app() {
         return 0
     fi
 
+    echo
     log_info "Installing 1Password desktop app..."
     if brew install --cask 1password; then
         log_success "1Password app installed successfully"
@@ -163,6 +185,7 @@ install_1password_cli() {
         return 0
     fi
 
+    echo
     log_info "Installing 1Password CLI..."
     if brew install 1password-cli; then
         log_success "1Password CLI installed successfully"
@@ -196,7 +219,7 @@ guide_1password_setup() {
     echo
     log_info "Setting up 1Password integration..."
     echo
-    echo "Please complete the following steps:"
+    echo "💡 Please complete the following steps:"
     echo "  1. Open 1Password desktop app"
     echo "  2. Sign in to all your accounts"
     echo "  3. Go to Settings → Developer"
@@ -227,7 +250,7 @@ guide_1password_setup() {
         # Show available accounts
         echo
         log_info "Available 1Password accounts:"
-        op account list --format=table 2>/dev/null || echo "  (Unable to list accounts - this is normal for some configurations)"
+        op account list --format=table 2>/dev/null || echo "   (Unable to list accounts - this is normal for some configurations)"
     else
         log_warning "1Password CLI integration test failed"
         echo
@@ -259,6 +282,7 @@ install_additional_tools() {
         "git"
     )
 
+    echo
     log_info "Installing additional development tools..."
 
     for tool in "${tools[@]}"; do
@@ -277,6 +301,7 @@ install_additional_tools() {
 
 # Update Homebrew and cleanup
 update_homebrew() {
+    echo
     log_info "Updating Homebrew and cleaning up..."
 
     if brew update && brew upgrade && brew cleanup; then
@@ -293,7 +318,7 @@ initialize_dotfiles() {
 
     if [[ -d "$HOME/.local/share/chezmoi" ]]; then
         log_warning "Chezmoi directory already exists"
-        
+
         if [[ -t 0 ]]; then
             # Interactive terminal
             read -p "Do you want to reinitialize? This will backup existing config. (y/N): " -r < /dev/tty
@@ -305,7 +330,7 @@ initialize_dotfiles() {
                 return 0
             }
         fi
-        
+
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             # Backup existing chezmoi directory
             local backup_dir="$HOME/.local/share/chezmoi.backup.$(date +%Y%m%d_%H%M%S)"
@@ -319,6 +344,7 @@ initialize_dotfiles() {
 
     log_info "Initializing chezmoi with dotfiles repository..."
     if chezmoi init --apply gperdomor/dotfiles; then
+        echo
         log_success "Dotfiles initialized and applied successfully!"
     else
         log_error "Failed to initialize dotfiles"
@@ -329,9 +355,7 @@ initialize_dotfiles() {
 
 # Main execution
 main() {
-    echo
-    log_info "🏠 Starting automated macOS dotfiles setup"
-    echo
+    show_script_header "🏠 Starting automated macOS dotfiles setup"
 
     # Check environment
     check_macos
@@ -355,8 +379,8 @@ main() {
     initialize_dotfiles
 
     echo
-    log_success "🎉 Dotfiles setup completed successfully!"
-    echo
+    show_script_header "✅ Installation script completed successfully!"
+
     log_info "What was installed:"
     echo "  ✅ Xcode Command Line Tools"
     echo "  ✅ Homebrew package manager"
@@ -365,7 +389,7 @@ main() {
     echo "  ✅ Chezmoi dotfiles manager"
     echo "  ✅ All configs was applied from the repository gperdomor/dotfiles"
     echo
-    log_info "Next steps:"
+    log_title "🚀 Next Steps:"
     echo "  • Open a new terminal to load your new shell configuration"
     echo "  • Run 'chezmoi apply' to apply any future dotfiles changes"
     echo "  • Customize your setup by editing files in ~/.local/share/chezmoi"

@@ -30,7 +30,7 @@ check_ohmyzsh_prerequisites() {
 # Check if Oh My Zsh is already installed
 check_existing_installation() {
     if [[ -d "$OH_MY_ZSH_DIR" ]]; then
-        log_info "📁 Oh My Zsh directory found at $OH_MY_ZSH_DIR"
+        log_info "Oh My Zsh directory found at $OH_MY_ZSH_DIR"
 
         # Check if it looks like a valid installation
         if [[ -f "$OH_MY_ZSH_DIR/oh-my-zsh.sh" ]]; then
@@ -118,7 +118,8 @@ verify_installation() {
 
 # Show installation status
 show_installation_status() {
-    log_info "📊 Installation status:"
+    echo
+    log_info "Installation status:"
 
     if [[ -d "$OH_MY_ZSH_DIR" ]]; then
         echo "  ✅ Oh My Zsh: Installed"
@@ -162,9 +163,7 @@ show_installation_status() {
 
 # Main execution
 main() {
-    echo
-    log_info "🐚 Oh My Zsh Installation Manager"
-    echo
+    show_script_header "🐚 Oh My Zsh Installation Manager"
 
     local failures=0
 
@@ -176,7 +175,7 @@ main() {
 
     # Check if already installed
     if check_existing_installation; then
-        log_success "🎉 Oh My Zsh is already installed and ready to use!"
+        log_success "Oh My Zsh is already installed and ready to use!"
     else
         # Backup existing .zshrc
         if ! backup_zshrc; then

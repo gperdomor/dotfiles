@@ -23,7 +23,7 @@ check_macos() {
 
 # Customize Finder preferences
 customize_finder() {
-    log_info "📁 Configuring Finder..."
+    log_title "📁 Configuring Finder..."
 
     # Show status bar in the bottom of Finder windows
     defaults write com.apple.finder "ShowStatusBar" -bool "true"
@@ -75,7 +75,8 @@ customize_finder() {
 
 # Customize Dock preferences
 customize_dock() {
-    log_info "🚀 Configuring Dock..."
+    echo
+    log_title "🚀 Configuring Dock..."
 
     # Set the icon size of Dock items in pixels (16-128, default is 64)
     defaults write com.apple.dock "tilesize" -int "42"
@@ -144,7 +145,8 @@ customize_dock() {
 
 # Customize Trackpad preferences
 customize_trackpad() {
-    log_info "👆 Configuring Trackpad..."
+    echo
+    log_title "👆 Configuring Trackpad..."
 
     # Enable tap to click for this user and for the login screen
     defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad "Clicking" -bool "true"
@@ -224,9 +226,7 @@ customize_trackpad() {
 
 # Main execution
 main() {
-    echo
-    log_info "⚙️  Customizing preferences and settings for macOS..."
-    echo
+    show_script_header "⚙️  Customizing preferences and settings for macOS..."
 
     # Check environment
     check_macos
@@ -242,14 +242,14 @@ main() {
 
     # Summary of what was configured
     echo
-    log_info "📋 Configuration Summary:"
+    log_title "📋 Configuration Summary:"
     echo "  ✅ Finder preferences (status bar, path bar, view settings)"
     echo "  ✅ Dock preferences (size, animations, behaviors)"
     echo "  ✅ Trackpad preferences (tap to click, gestures)"
 
     # Next steps and recommendations
     echo
-    log_info "🚀 Next Steps:"
+    log_title "🚀 Next Steps:"
     echo "  • Some settings require a logout/login to take full effect"
     echo "  • Trackpad settings may need system restart for complete activation"
     echo "  • Run 'killall SystemUIServer' if menu bar changes don't appear"

@@ -33,6 +33,10 @@ log_error() {
     echo -e "${RED}❌ $1${NC}" >&2
 }
 
+log_title() {
+    echo -e "${BLUE}$1${NC}"
+}
+
 log_header() {
     echo -e "${BOLD}${CYAN}$1${NC}"
 }
@@ -124,11 +128,10 @@ format_duration() {
 # Show script header with title and version
 show_script_header() {
     local title="$1"
-    local version="${2:-1.0.0}"
 
     echo
     log_header "═══════════════════════════════════════════════════════════════"
-    log_header "$title v$version"
+    log_header "$title"
     log_header "═══════════════════════════════════════════════════════════════"
     echo
 }
@@ -141,9 +144,9 @@ show_summary() {
 
     echo
     if [[ $failures -eq 0 ]]; then
-        log_success "🎉 $success_message"
+        log_success "$success_message"
     else
-        log_warning "⚠️  $failure_message: $failures failure(s)"
+        log_warning "$failure_message: $failures failure(s)"
     fi
 }
 
@@ -152,7 +155,7 @@ show_tips() {
     local tips=("$@")
 
     echo
-    log_info "💡 Tips:"
+    log_title "💡 Tips:"
     for tip in "${tips[@]}"; do
         echo "  • $tip"
     done

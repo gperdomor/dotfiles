@@ -31,16 +31,46 @@ docker_login() {
     fi
 }
 
+check_docker_auth() {
+    local registry="$1"
+    local registry_name="$2"
+    local config_file="$HOME/.docker/config.json"
+
+    # Check if config file exists
+    if [[ ! -f "$config_file" ]]; then
+        echo "  ❌ $registry_name: No Docker config file found"
+        return 1
+    fi
+
+    # For DockerHub, check multiple possible auth entries
+    if [[ "$registry" == "dockerhub" ]]; then
+        if jq -e '.auths["https://index.docker.io/v1/"] // .auths["docker.io"] // .auths["index.docker.io"]' "$config_file" >/dev/null 2>&1; then
+            echo "  ✅ $registry_name: Authenticated"
+            return 0
+        else
+            echo "  ❌ $registry_name: Not authenticated"
+            return 1
+        fi
+    else
+        # For other registries, check the specific registry URL
+        if jq -e ".auths[\"$registry\"] // .auths[\"https://$registry\"]" "$config_file" >/dev/null 2>&1; then
+            echo "  ✅ $registry_name: Authenticated"
+            return 0
+        else
+            echo "  ❌ $registry_name: Not authenticated"
+            return 1
+        fi
+    fi
+}
+
 # Main execution
 main() {
-    echo
-    log_info "🐳 Configuring Docker registry authentication..."
-    echo
+    show_script_header "🐳 Configuring Docker registry authentication..."
 
     local login_failures=0
 
     # DockerHub login
-    log_info "📦 Authenticating with DockerHub..."
+    log_title "📦 Authenticating with DockerHub..."
     if ! docker_login "" \
         "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/qp3chp4oubentia6febw4m4wfi/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
         "{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/b7gcbrwyxzni5dt3wb5e75sf5y/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
@@ -50,7 +80,8 @@ main() {
 
 {{ if .isWorkComputer -}}
     # GitLab Registry login (work computer only)
-    log_info "🦊 Authenticating with GitLab Registry..."
+    echo
+    log_title "🦊 Authenticating with GitLab Registry..."
     if ! docker_login "registry.falabella.tech" \
         "{{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/6e5oydk6aeh7zlfpm7se5gcyf4/username" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
         "{{ onepasswordRead "op://3fvkfxjb35fzfensrsa2gsxfle/bzfnqbmzljrvyruzty2sq5auw4/password" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}" \
@@ -59,7 +90,6 @@ main() {
     fi
 {{ end -}}
 
-    echo
     # Summary
     show_summary $login_failures \
         "All Docker registry logins completed successfully!" \
@@ -68,21 +98,12 @@ main() {
     echo
 
     # Show currently logged in registries
-    log_info "📋 Current Docker authentication status:"
-    if docker system info --format '{{json .}}' 2>/dev/null | grep -q "Username"; then
-        echo "  ✅ DockerHub: Authenticated"
-    else
-        echo "  ❌ DockerHub: Not authenticated"
-    fi
+    log_title "📋 Current Docker authentication status:"
+    # Check DockerHub authentication
+    check_docker_auth "dockerhub" "DockerHub"
 
 {{ if .isWorkComputer -}}
-    # Check GitLab registry auth (basic check)
-    if docker pull registry.falabella.tech/digital-retail/ci-reuse/lint/markdown:latest >/dev/null 2>&1; then
-        echo "  ✅ GitLab Registry: Authenticated"
-        docker rmi registry.falabella.tech/digital-retail/ci-reuse/lint/markdown:latest >/dev/null 2>&1 || true
-    else
-        echo "  ❌ GitLab Registry: Authentication status unknown"
-    fi
+    check_docker_auth "registry.falabella.tech" "GitLab Registry"
 {{ end -}}
 
     show_tips \

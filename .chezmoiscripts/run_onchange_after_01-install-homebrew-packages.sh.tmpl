@@ -48,7 +48,7 @@ check_brewfile_exists() {
 
 # Update Homebrew
 update_homebrew() {
-    log_info "🔄 Updating Homebrew..."
+    log_info "Updating Homebrew..."
 
     if brew update >/dev/null 2>&1; then
         log_success "Homebrew updated successfully"
@@ -61,7 +61,8 @@ update_homebrew() {
 
 # Show what will be installed/updated
 show_installation_plan() {
-    log_info "📋 Analyzing Brewfile dependencies..."
+    echo
+    log_title "📋 Analyzing Brewfile dependencies..."
 
     # Check for outdated packages
     local outdated_count=0
@@ -72,16 +73,16 @@ show_installation_plan() {
 
     # Show bundle status
     if brew bundle check 2>/dev/null; then
-        log_info "✅ All Brewfile dependencies are satisfied"
+        log_success "All Brewfile dependencies are satisfied"
     else
-        log_info "📥 New packages will be installed from Brewfile"
+        log_title "📥 New packages will be installed from Brewfile"
     fi
     echo
 }
 
 # Install packages from Brewfile
 install_brewfile_packages() {
-    log_info "🍺 Installing packages from Brewfile..."
+    log_title "🍺 Installing packages from Brewfile..."
 
     local start_time
     start_time=$(date +%s)
@@ -102,7 +103,8 @@ install_brewfile_packages() {
 
 # Cleanup unnecessary packages
 cleanup_packages() {
-    log_info "🧹 Cleaning up unnecessary packages..."
+    echo
+    log_title "🧹 Cleaning up unnecessary packages..."
 
     # Check for packages to cleanup
     if brew bundle cleanup --dry-run 2>/dev/null | grep -q "Would uninstall"; then
@@ -113,6 +115,7 @@ cleanup_packages() {
     fi
 
     # Clean up cache
+    echo
     if brew cleanup >/dev/null 2>&1; then
         log_success "Cache cleaned up successfully"
     else
@@ -122,7 +125,8 @@ cleanup_packages() {
 
 # Show post-installation status
 show_installation_status() {
-    log_info "📊 Installation summary:"
+    echo
+    log_title "📊 Installation summary:"
 
     # Count installed packages
     local brew_count
@@ -142,15 +146,11 @@ show_installation_status() {
     else
         echo "  ✅ All packages are up to date"
     fi
-    echo
 }
 
 # Main execution
 main() {
-    echo
-    log_info "🍺 Homebrew Package Manager"
-    log_info "Brewfile hash: ${BREWFILE_HASH:0:8}..."
-    echo
+    show_script_header "🍺 Homebrew Package Manager - Brewfile hash: ${BREWFILE_HASH:0:8}"
 
     local failures=0
 
