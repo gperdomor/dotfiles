@@ -8,3 +8,4 @@ MISE_NODE_COREPACK = "true"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
+experimental = true

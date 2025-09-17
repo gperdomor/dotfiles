@@ -1,7 +1,7 @@
 [user]
 	name = Gustavo Perdomo
 	email = gperdomor@gmail.com
-	signingkey = {{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/6qhqdhycazx76eve2lltmvdd6i/public_key" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}
+	signingkey = key::{{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/6qhqdhycazx76eve2lltmvdd6i/public_key" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }} {{ onepasswordRead "op://op3k53txtuxsdn3ajfejlejos4/6qhqdhycazx76eve2lltmvdd6i/title" "Y6TIYA2XHNHYJBR5E2BJXPSH4M" }}
 
 [protocol]
 	version = 2
@@ -28,6 +28,7 @@
 
 [gpg]
 	format = ssh
+	program = /opt/homebrew/bin/gpg
 
 [commit]
 	gpgsign = true
