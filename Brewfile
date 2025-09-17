@@ -1,3 +1,4 @@
+tap "slp/krunkit"
 brew "act"
 brew "bombardier"
 brew "chezmoi"
@@ -17,11 +18,12 @@ brew "mise"
 brew "mkcert"
 brew "oh-my-posh"
 brew "openssl@3"
-# brew "podman"
+brew "podman"
 brew "rclone"
 brew "starship"
 brew "vapor"
 brew "zoxide"
+brew "slp/krunkit/krunkit"
 cask "1password"
 cask "1password-cli"
 cask "alcove"
@@ -44,11 +46,11 @@ cask "microsoft-auto-update"
 cask "microsoft-edge"
 cask "microsoft-teams"
 # cask "ngrok"
-# cask "notchnook"
 cask "notion"
 cask "p4v"
-# cask "podman-desktop"
+cask "podman-desktop"
 cask "postman"
+cask "readdle-spark"
 cask "tableplus"
 cask "tower"
 cask "transmission"
@@ -63,6 +65,7 @@ mas "Bitdefender Virus Scanner", id: 500154009
 mas "Craft", id: 1487937127
 # mas "Keynote", id: 409183694
 # mas "Magnet", id: 441258766
+# mas "Medis", id: 1579200037
 # mas "Microsoft Excel", id: 462058435
 # mas "Microsoft Word", id: 462054704
 mas "Money", id: 1185488696

@@ -1,5 +1,4 @@
-theme = catppuccin-frappe
-# theme = dark:catppuccin-frappe,light:catppuccin-latte
+theme = dark:Catppuccin Frappe,light:Catppuccin Frappe
 # background-opacity = 0.7
 # background-blur-radius = 20
 font-family = "JetBrains Mono"
