@@ -1,0 +1,15 @@
+audit=false
+auth-type=web
+cache=${XDG_CACHE_HOME}/npm
+init-author-email={{ .emailAddress }}
+init-author-name={{ .name }}
+init-author-url={{ .url }}
+init-license=MIT
+init-version=0.0.0
+lockfile-version=3
+logs-dir=${XDG_STATE_HOME}/npm/logs
+prefer-online=true
+save-exact=true
+script-shell=/bin/zsh
+sign-git-commit=true
+sign-git-tag=true

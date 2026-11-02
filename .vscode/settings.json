@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.toml.tmpl": "toml",
+        "dot_zprofile": "shellscript",
+        "dot_zshrc": "shellscript"
+    }
+}

@@ -150,9 +150,19 @@ eval "$(mise activate zsh)"
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.toml)"
 else
-  export STARSHIP_CONFIG=$HOME/.config/starship.toml
   eval "$(starship init zsh)"
 fi
 
 # Aliases
 alias c="clear"
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/gperdomor/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
+
+export PATH="$HOME/.local/bin:$PATH"

@@ -1,0 +1,124 @@
+# Taps
+tap "anomalyco/tap"
+tap "productdevbook/tap"
+tap "protonpass/tap", trusted: true
+tap "slp/krunkit", trusted: true
+tap "supabase/tap"
+tap "tinygo-org/tools", trusted: true
+
+# Formulae
+
+## Development Tools
+
+brew "chezmoi" # Manage your dotfiles across multiple diverse machines, securely
+brew "cloc" # Statistics utility to count lines of code
+brew "container" # Create and run Linux containers using lightweight virtual machines
+brew "cosign" # Container Signing
+brew "gh" # GitHub command-line tool
+brew "ghq" # Remote repository management made easy
+brew "git-delta" # Syntax-highlighting pager for git and diff output
+brew "git" # Distributed revision control system
+brew "gitlab-runner" # Official GitLab CI runner
+brew "glab" # Open-source GitLab command-line tool
+brew "gnupg" # GNU Privacy Guard (OpenPGP)
+brew "k6" # Modern load testing tool, using Go and JavaScript
+brew "krunkit" # A CLI tool to start Linux KVM or macOS Hypervisor framework virtual machines using the libkrun platform.
+brew "mise" # Polyglot runtime manager (asdf rust clone)
+brew "opencode-v2" # OpenCode V2 - the AI coding agent for the terminal
+brew "podman" # Tool for managing OCI containers and pods
+brew "supabase"  # Supabase CLI
+brew "tinygo" # TinyGo is a Go compiler for small places. Microcontrollers, WebAssembly, and command-line tools. Based on LLVM.
+brew "vapor" # Command-line tool for Vapor (Server-side Swift web framework)
+
+## Utilities
+brew "fastfetch" # Like neofetch, but much faster because written mostly in C
+brew "fzf" # Command-line fuzzy finder written in Go
+brew "iperf" # Tool to measure maximum TCP and UDP bandwidth
+brew "jq" # Lightweight and flexible command-line JSON processor
+brew "mas" if OS.mac? # Mac App Store command-line interface
+brew "mkcert" # Simple tool to make locally trusted development certificates
+brew "msedit" # Simple text editor with clickable interface
+brew "oh-my-posh" # Prompt theme engine for any shell
+brew "rclone" # Rsync for cloud storage
+brew "starship" # Cross-shell prompt for astronauts
+brew "tombi" # TOML formatter, linter and language server
+brew "uv" # Extremely fast Python package installer and resolver, written in Rust
+brew "zoxide" # Shell extension to navigate your filesystem faster
+
+# Casks
+
+## Development Tools
+
+cask "araxis-merge" # Two and three-way file comparison, merging and folder synchronisation
+cask "bruno" # Open source IDE for exploring and testing APIs
+cask "docker-desktop" # App to build and share containerised applications and microservices
+cask "gcloud-cli" # Set of tools to manage resources and applications hosted on Google Cloud
+cask "ghostty" # Terminal emulator that uses platform-native UI and GPU acceleration
+cask "git-credential-manager" # Cross-platform Git credential storage for multiple hosting providers
+cask "google-chrome" # Web browser
+cask "insomnia" # HTTP and GraphQL Client
+cask "jetbrains-toolbox" # JetBrains tools manager
+# cask "ngrok" # Reverse proxy, secure introspectable tunnels to localhost
+cask "opencode-desktop" # AI coding agent desktop client
+cask "orchard" # Native GUI for Apple Containers
+cask "p4v" # Visual client for Helix Core
+cask "podman-desktop"
+cask "portkiller" # Menu bar app to find and kill processes running on open ports
+cask "postman" # Collaboration platform for API development
+cask "tablepro" # Native database client for many database types
+cask "tower" # Git client focusing on power and productivity
+cask "utm" # Virtual machines UI using QEMU
+cask "visual-studio-code" # Open-source code editor
+cask "visual-studio-code@insiders" # Open-source code editor
+
+## Utilities & Applications
+
+cask "1password-cli" # Command-line interface for 1Password
+cask "1password" # Password manager that keeps all passwords secure behind one password
+cask "affinity" # Image editing and design software
+cask "alcove" # Utility to add Dynamic Island like features to notch area
+cask "daisydisk" # Disk space visualiser
+cask "discord" # Voice and text chat software
+cask "homebrew-app" # Homebrew's official GUI
+cask "iina" # Free and open-source media player
+cask "keka" # File archiver
+cask "microsoft-auto-update" # Provides updates to various Microsoft products
+cask "microsoft-edge" # Multi-platform web browser
+cask "microsoft-teams" # Meet, chat, call, and collaborate in just one place
+cask "puremac" # Open-source application manager and system cleaner
+cask "raycast" # Menu bar launcher and productivity tool
+cask "readdle-spark" # Email client
+cask "robbietilton-compositor" # Photoshop alternative
+cask "transmission" # Open-source BitTorrent client
+cask "vlc" # Multimedia player
+cask "vorssaint" # Menu bar toolkit with keep-awake, system monitor and volume mixer
+cask "zoom" # Video communication and virtual meeting platform
+
+## Fonts
+
+cask "font-cascadia-code"
+cask "font-fira-code-nerd-font"
+cask "font-google-sans-code"
+cask "font-inter"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+
+# Mac App Store
+
+mas "1Password for Safari", id: 1569813296
+mas "Bitdefender Virus Scanner", id: 500154009
+mas "Craft", id: 1487937127
+mas "Duplicate File Finder", id: 1032755628
+mas "Keynote", id: 361285480
+# mas "Magnet", id: 441258766
+mas "Medis", id: 1579200037
+mas "Microsoft Outlook", id: 985367838
+mas "Money", id: 1185488696
+mas "Numbers", id: 361304891
+mas "Pages", id: 361309726
+mas "Pixelmator Pro", id: 6746662575
+mas "Reeder", id: 1529448980
+mas "Slack", id: 803453959
+mas "Swift Playground", id: 1496833156
+mas "WhatsApp", id: 310633997
+mas "Xcode", id: 497799835

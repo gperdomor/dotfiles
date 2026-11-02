@@ -1,8 +1,13 @@
+@nestjs/cli
 autocannon
+corepack
 create-nx-workspace
 depcheck
 eslint
 knip
 npm-check-updates
 nx
+oxfmt
+oxlint
 prettier
+vite-plus
